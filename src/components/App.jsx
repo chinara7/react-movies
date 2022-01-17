@@ -52,7 +52,8 @@ class App extends Component {
                 "overview": "This is a wider card with supporting text below as a natural lead-in to additional content.",
                 "imageURL": "https://image.tmdb.org/t/p/w220_and_h330_face/6Bbq8qQWpoApLZYWFFAuZ1r2gFw.jpg"
             }
-        ]
+        ],
+        searchQuery: ""
     }
 
 
@@ -71,15 +72,25 @@ class App extends Component {
         }))
     }
 
+    searchMovie = (e) => {
+        this.setState({ searchQuery: e.target.value })
+        console.log(e.target.value)
+    }
+
     render() {
+        let filterMovie = this.state.movies.filter(
+            (m) => {
+                return m.name.toLowerCase().indexOf(this.state.searchQuery.toLowerCase()) !== -1
+            }
+        )
         return (
             <div className='container'>
                 <div className='row'>
                     <div className='col-lg-12'>
-                        <SearchBar />
+                        <SearchBar searchMovieProp={this.searchMovie} />
                     </div>
                 </div>
-                <MovieList movies={this.state.movies} deleteMovieProp={this.deleteMovie} />
+                <MovieList movies={filterMovie} deleteMovieProp={this.deleteMovie} />
             </div>
         )
     }
